@@ -14,7 +14,7 @@ const symbols = [
 export default function HomePage() {
   return (
     <main className="relative min-h-screen flex flex-col">
-      {/* Floating background symbols */}
+      {/* background symbol*/}
       {symbols.map((s, i) => (
         <span
           key={i}
@@ -29,7 +29,7 @@ export default function HomePage() {
 
       <section className="flex-1 flex flex-col items-center justify-center text-center px-6 relative z-10">
         <h1 className="text-4xl font-extrabold text-slate-800 mb-2 opacity-0 animate-fade-up">
-          Learning that feels like play 🎉
+          Learning that feels like play   
         </h1>
         <p className="text-slate-600 mb-10 max-w-md opacity-0 animate-fade-up delay-100">
           EduNexa connects students, parents, and teachers in one fun, friendly space.
