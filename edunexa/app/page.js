@@ -22,7 +22,7 @@ export default function HomePage() {
 
           <RoleCard
             title="Student/Parent Login"
-            subtitle="Login with your RollNo and Password to access your Student Services and Account. In case you face any login issues, contact DoAA Office"
+            subtitle="Login with your RollNo and Password to access your Student Account. In case you face any login issues, contact DoAA Office."
             color="bg-[#3F3F3F]"
             icon="fa-user-graduate"
             href="/login?role=student"
@@ -40,7 +40,7 @@ export default function HomePage() {
 
           <RoleCard
             title="Administrator Login"
-            subtitle="For Admission Staff only. Use your Employee Code and Password to log in for admission related services"
+            subtitle="For Administration Staff only. Use your Employee Code and Password to log in for  related services."
             color="bg-[#3F3F3F]"
             icon="fa-user-shield"
             href="/login?role=teacher"

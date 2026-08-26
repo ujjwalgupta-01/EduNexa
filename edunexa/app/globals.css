@@ -6,7 +6,7 @@
 }
 
 body {
-  background: whitesmoke;
+  background: white;
   overflow-x: hidden;
   position: relative;
 }
@@ -23,7 +23,7 @@ body::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.15; /* adjust to taste, 0 = invisible, 1 = full strength */
+  opacity: 0.3; /* adjust to taste, 0 = invisible, 1 = full strength */
   z-index: -1;
 }
 
