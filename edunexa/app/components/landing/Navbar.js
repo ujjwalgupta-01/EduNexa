@@ -21,7 +21,7 @@ export default function Navbar() {
             <img src="/icon.png" alt="" />
           </div>
 
-          <span className="text-xl font-bold tracking-tight">
+          <span className="text-2xl font-bold tracking-tight pop">
             EduNexa
           </span>
         </Link>
