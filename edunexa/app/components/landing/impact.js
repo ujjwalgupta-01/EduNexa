@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const stats = [
-  ["10K+", "Learners"],
-  ["500+", "Teachers"],
-  ["100+", "Courses"],
-  ["95%", "Satisfaction"],
+  ["0+", "Learners"],
+  ["0+", "Teachers"],
+  ["0+", "Courses"],
+  ["100%", "Satisfaction"],
 ];
 
 export default function Impact() {

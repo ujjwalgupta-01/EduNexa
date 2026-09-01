@@ -22,7 +22,7 @@ export default function Footer() {
             >
 
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 font-black">
-                <img src="icon.png" alt="" />
+                <Image src="/icon.png" height={40} width={40} alt="Logo"></Image>
               </div>
 
               <span className="text-xl font-bold">

@@ -27,7 +27,7 @@ export default function CTA() {
         </p>
 
         <Link
-          href="/register"
+          href="#RoleSelector"
           className="mt-8 inline-flex items-center gap-3 rounded-xl bg-white px-7 py-4 font-bold text-indigo-700 shadow-xl transition hover:-translate-y-1"
         >
           Get Started Now

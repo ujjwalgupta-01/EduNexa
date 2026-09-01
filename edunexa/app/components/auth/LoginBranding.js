@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Brain,
@@ -22,8 +23,8 @@ export default function LoginBranding() {
           href="/"
           className="flex w-fit items-center gap-3"
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl text-xl bg-[#101532] font-black text-[#5540e8] shadow-lg">
-            <img src="icon.png" alt="" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl text-xl  font-black text-[#5540e8] shadow-lg">
+            <Image src="/icon.png" height={40} width={40} alt="Logo"></Image>
           </div>
 
           <span className="text-xl font-bold tracking-tight text-white">
