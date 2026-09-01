@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import {
   Eye,
   EyeOff,
@@ -202,6 +203,7 @@ export default function LoginForm({ role }) {
       {/* Google */}
       <button
         type="button"
+        onClick={()=>{signIn("google", { callbackUrl: "/" })}}
         className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-5 py-3.5 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
       >
         <span className="text-lg font-bold">
