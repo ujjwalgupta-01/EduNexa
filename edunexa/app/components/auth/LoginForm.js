@@ -219,10 +219,10 @@ export default function LoginForm({ role }) {
         Don't have an account?{" "}
 
         <Link
-          href={`/register?role=${role}`}
+          href={`/create-account?role=${role}`}
           className="font-bold text-indigo-600 hover:text-indigo-700"
         >
-          Create an account
+         Create an Account
         </Link>
 
       </p>
