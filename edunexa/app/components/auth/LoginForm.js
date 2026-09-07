@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 import {
   Eye,
   EyeOff,
@@ -36,12 +38,79 @@ const roleConfig = {
 };
 
 export default function LoginForm({ role }) {
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const currentRole =
     roleConfig[role?.toLowerCase()] || roleConfig.student;
 
   const Icon = currentRole.icon;
+
+  // --------------------------------
+  // EMAIL + PASSWORD LOGIN
+  // --------------------------------
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Invalid email or password.");
+        return;
+      }
+
+      // Redirect according to selected role
+      switch (role?.toLowerCase()) {
+        case "teacher":
+          router.push("/teacher/dashboard");
+          break;
+
+        case "parent":
+          router.push("/parent/dashboard");
+          break;
+
+        case "student":
+        default:
+          router.push("/student/dashboard");
+          break;
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("LOGIN ERROR:", error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // --------------------------------
+  // GOOGLE LOGIN
+  // --------------------------------
+  async function handleGoogleLogin() {
+    try {
+      await signIn("google", {
+        callbackUrl: "/",
+      });
+    } catch (error) {
+      console.error("GOOGLE LOGIN ERROR:", error);
+      setError("Unable to sign in with Google.");
+    }
+  }
 
   return (
     <div className="w-full max-w-md">
@@ -53,7 +122,7 @@ export default function LoginForm({ role }) {
           className="flex items-center gap-2"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5540e8] text-lg font-black text-white shadow-lg shadow-indigo-200">
-            <img src="icon.png" alt="" />
+            {/* Logo can be added here */}
           </div>
 
           <span className="text-xl font-bold text-[#11152b]">
@@ -82,7 +151,10 @@ export default function LoginForm({ role }) {
       </div>
 
       {/* Form */}
-      <form className="mt-9 space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-9 space-y-5"
+      >
 
         {/* Email */}
         <div>
@@ -96,10 +168,14 @@ export default function LoginForm({ role }) {
 
           <input
             id="email"
+            name="email"
             type="email"
             placeholder="you@example.com"
             autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+            required
           />
 
         </div>
@@ -129,10 +205,14 @@ export default function LoginForm({ role }) {
 
             <input
               id="password"
+              name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-gray-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+              required
             />
 
             <button
@@ -172,17 +252,27 @@ export default function LoginForm({ role }) {
 
         </div>
 
+        {/* Error */}
+        {error && (
+          <div className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+            {error}
+          </div>
+        )}
+
         {/* Login Button */}
         <button
           type="submit"
-          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#5540e8] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-[#4633d0]"
+          disabled={loading}
+          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#5540e8] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-[#4633d0] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Sign In
+          {loading ? "Signing in..." : "Sign In"}
 
-          <ArrowRight
-            size={18}
-            className="transition group-hover:translate-x-1"
-          />
+          {!loading && (
+            <ArrowRight
+              size={18}
+              className="transition group-hover:translate-x-1"
+            />
+          )}
         </button>
 
       </form>
@@ -203,7 +293,7 @@ export default function LoginForm({ role }) {
       {/* Google */}
       <button
         type="button"
-        onClick={()=>{signIn("google", { callbackUrl: "/" })}}
+        onClick={handleGoogleLogin}
         className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-5 py-3.5 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
       >
         <span className="text-lg font-bold">
@@ -219,21 +309,23 @@ export default function LoginForm({ role }) {
         Don't have an account?{" "}
 
         <Link
-          href={`/create-account?role=${role}`}
+          href={`/create-account?role=${role || "student"}`}
           className="font-bold text-indigo-600 hover:text-indigo-700"
         >
-         Create an Account
+          Create an Account
         </Link>
 
       </p>
 
       {/* Security */}
       <div className="mt-8 flex items-center justify-center gap-2 text-xs text-gray-400">
+
         <ShieldCheck size={14} />
 
         <span>
           Your information is securely protected
         </span>
+
       </div>
 
     </div>
