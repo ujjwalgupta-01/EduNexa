@@ -43,18 +43,17 @@ export default function LoginForm({ role }) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const selectedRole = role?.toLowerCase() || "student";
+
   const currentRole =
-    roleConfig[role?.toLowerCase()] || roleConfig.student;
+    roleConfig[selectedRole] || roleConfig.student;
 
   const Icon = currentRole.icon;
 
-  // --------------------------------
   // EMAIL + PASSWORD LOGIN
-  // --------------------------------
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -73,8 +72,8 @@ export default function LoginForm({ role }) {
         return;
       }
 
-      // Redirect according to selected role
-      switch (role?.toLowerCase()) {
+      // Redirect based on selected role
+      switch (selectedRole) {
         case "teacher":
           router.push("/teacher/dashboard");
           break;
@@ -98,13 +97,13 @@ export default function LoginForm({ role }) {
     }
   }
 
-  // --------------------------------
   // GOOGLE LOGIN
-  // --------------------------------
   async function handleGoogleLogin() {
+    setError("");
+
     try {
       await signIn("google", {
-        callbackUrl: "/",
+        callbackUrl: `/${selectedRole}/dashboard`,
       });
     } catch (error) {
       console.error("GOOGLE LOGIN ERROR:", error);
@@ -117,13 +116,8 @@ export default function LoginForm({ role }) {
 
       {/* Mobile Logo */}
       <div className="mb-10 flex justify-center lg:hidden">
-        <Link
-          href="/"
-          className="flex items-center gap-2"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5540e8] text-lg font-black text-white shadow-lg shadow-indigo-200">
-            {/* Logo can be added here */}
-          </div>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5540e8] text-lg font-black text-white shadow-lg shadow-indigo-200" />
 
           <span className="text-xl font-bold text-[#11152b]">
             EduNexa
@@ -151,14 +145,10 @@ export default function LoginForm({ role }) {
       </div>
 
       {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="mt-9 space-y-5"
-      >
+      <form onSubmit={handleSubmit} className="mt-9 space-y-5">
 
         {/* Email */}
         <div>
-
           <label
             htmlFor="email"
             className="mb-2 block text-sm font-semibold text-gray-700"
@@ -177,14 +167,12 @@ export default function LoginForm({ role }) {
             className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
             required
           />
-
         </div>
 
         {/* Password */}
         <div>
 
           <div className="mb-2 flex items-center justify-between">
-
             <label
               htmlFor="password"
               className="block text-sm font-semibold text-gray-700"
@@ -198,7 +186,6 @@ export default function LoginForm({ role }) {
             >
               Forgot password?
             </Link>
-
           </div>
 
           <div className="relative">
@@ -233,23 +220,17 @@ export default function LoginForm({ role }) {
             </button>
 
           </div>
-
         </div>
 
         {/* Remember */}
         <div className="flex items-center">
-
           <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
-
             <input
               type="checkbox"
               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
-
             Remember me
-
           </label>
-
         </div>
 
         {/* Error */}
@@ -279,7 +260,6 @@ export default function LoginForm({ role }) {
 
       {/* Divider */}
       <div className="my-7 flex items-center gap-4">
-
         <div className="h-px flex-1 bg-gray-200" />
 
         <span className="text-xs font-medium text-gray-400">
@@ -287,7 +267,6 @@ export default function LoginForm({ role }) {
         </span>
 
         <div className="h-px flex-1 bg-gray-200" />
-
       </div>
 
       {/* Google */}
@@ -305,27 +284,23 @@ export default function LoginForm({ role }) {
 
       {/* Register */}
       <p className="mt-8 text-center text-sm text-gray-500">
-
         Don't have an account?{" "}
 
         <Link
-          href={`/create-account?role=${role || "student"}`}
+          href={`/create-account?role=${selectedRole}`}
           className="font-bold text-indigo-600 hover:text-indigo-700"
         >
           Create an Account
         </Link>
-
       </p>
 
       {/* Security */}
       <div className="mt-8 flex items-center justify-center gap-2 text-xs text-gray-400">
-
         <ShieldCheck size={14} />
 
         <span>
           Your information is securely protected
         </span>
-
       </div>
 
     </div>
